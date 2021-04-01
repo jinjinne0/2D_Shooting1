@@ -6,6 +6,7 @@
 //---------------------------------
 #include <vector>
 #include "Actor.hpp"
+#include "SDL/SDL_image.h"
 #include "SDL/SDL.h"
 
 //---------------------------------

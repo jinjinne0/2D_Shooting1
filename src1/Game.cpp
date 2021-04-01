@@ -42,7 +42,7 @@ bool Game::Initialize(){
         return false;
     }
     
-    //Create SDL window and renderer
+    //Create SDL window, renderer, and image
     mWindow = SDL_CreateWindow(
         "2D_Shooting1",
         100,           //top left x-coordinate of the window
@@ -55,7 +55,6 @@ bool Game::Initialize(){
         SDL_Log("Failed to create SDL window: %s", SDL_GetError());
         return false;
     }
-
     mRenderer = SDL_CreateRenderer(
         mWindow,
         -1,
@@ -63,6 +62,10 @@ bool Game::Initialize(){
     );
     if(!mRenderer){
         SDL_Log("Failed to create SDL renderer: %s", SDL_GetError());
+        return false;
+    }
+    if(IMG_Init(IMG_INIT_PNG) == 0){
+        SDL_Log("Unable to initialize SDL_image: %s", SDL_GetError());
         return false;
     }
 
