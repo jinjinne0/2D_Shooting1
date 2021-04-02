@@ -5,6 +5,8 @@
 //include
 //---------------------------------
 #include <vector>
+#include <string>
+#include <unordered_map>
 #include "Actor.hpp"
 #include "SDL/SDL_image.h"
 #include "SDL/SDL.h"
@@ -31,7 +33,7 @@ public:
 
     //TODO: 入力処理と出力生成のためのコンポーネントのAddとRemove関数
 
-    //TODO:　画像データや音声データなどをファイル名から取得し、そのまま出力できる形にしたものを返す関数
+    SDL_Texture* GetTexture(const std::string& filename);
 
 private:
     //Helper functions for game loop
@@ -52,8 +54,8 @@ private:
     //Track if we`re updating actors right now
     bool mUpdatingActors;
 
-    //TODO: 一度使った画像データや音声ファイルなどについて
-    //そのファイル名をkeyに、使えるようにしたデータを中身にしたmapで管理
+    // Map of textures loaded
+    std::unordered_map<std::string, SDL_Texture*> mTextures;
 
     //All the actors in the game
     std::vector<Actor*> mActors;

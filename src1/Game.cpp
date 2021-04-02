@@ -232,3 +232,31 @@ void Game::RemoveActor(Actor* actor){
 }
 
 //TODO: ヘッダファイルの方で追加したメンバ関数の定義
+
+SDL_Texture* GetTextures(const std::string& filename){
+    SDL_Texture* tex = nullptr;
+    //Is the texture already in the map?
+    auto iter = mTextures.find(filename);
+    if(iter != mTextures.end()){
+        tex = iter->second
+    }
+    else{
+        //Load from file
+        SDL_Surface* surf = IMG_LOAD(filename.c_str());
+        if(!surf){
+            SDL_Log("Failed to load texture file %s", filename.c_str());
+            return nullptr;
+        }
+
+        //Create texture from surface
+        tex = SDL_CreateTextureFromSurface(mRenderer, surf);
+        SDL_FreeSurface(surface);
+        if(!tex){
+            SDL_Log("Failed to convert surface to texture for %s", filename.c_str());
+        }
+
+        mTextures.emplace(filename, tex);
+    }
+
+    return tex;
+}
