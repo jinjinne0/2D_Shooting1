@@ -90,7 +90,7 @@ void Game::Shutdown(){
     IMG_Quit();
     SDL_DestroyRenderer(mRenderer);
     SDL_DestroyWindow(mWindow);
-    SDL_QUIT();
+    SDL_Quit();
 }
 
 void Game::RunLoop(){
@@ -105,15 +105,15 @@ void Game::RunLoop(){
 //TODO:　入力処理
 void Game::ProcessInput(){
     //get keyboard state
-    Uint32 state* = SDL_GetKeyboardState(NULL);
+    const Uint8* state = SDL_GetKeyboardState(NULL);
 
     //Input for controlling game
     SDL_Event event;
     while(SDL_PollEvent(&event)){
-        swith (event){
+        switch (event.type){
             case SDL_QUIT:
                 mIsRunning = false;
-                brerak;
+                break;
         }
     }
 
@@ -195,6 +195,13 @@ void Game::UnLoadData(){
     }
 
     //TODO: Delete other memory and clear members
+
+    //Destroy textures
+    for(auto i : mTextures){
+        SDL_DestroyTexture(i.second);
+    }
+    mTextures.clear();
+    
 }
 
 void Game::AddActor(Actor* actor){
@@ -233,16 +240,16 @@ void Game::RemoveActor(Actor* actor){
 
 //TODO: ヘッダファイルの方で追加したメンバ関数の定義
 
-SDL_Texture* GetTextures(const std::string& filename){
+SDL_Texture* Game::GetTexture(const std::string& filename){
     SDL_Texture* tex = nullptr;
     //Is the texture already in the map?
     auto iter = mTextures.find(filename);
     if(iter != mTextures.end()){
-        tex = iter->second
+        tex = iter->second;
     }
     else{
         //Load from file
-        SDL_Surface* surf = IMG_LOAD(filename.c_str());
+        SDL_Surface* surf = IMG_Load(filename.c_str());
         if(!surf){
             SDL_Log("Failed to load texture file %s", filename.c_str());
             return nullptr;
@@ -250,7 +257,7 @@ SDL_Texture* GetTextures(const std::string& filename){
 
         //Create texture from surface
         tex = SDL_CreateTextureFromSurface(mRenderer, surf);
-        SDL_FreeSurface(surface);
+        SDL_FreeSurface(surf);
         if(!tex){
             SDL_Log("Failed to convert surface to texture for %s", filename.c_str());
         }

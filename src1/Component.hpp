@@ -26,7 +26,9 @@ public:
     //Update this component by delta time
     virtual void Update(float deltatime);
 
+    //Getter
     int GetUpdateOrder() const {return mUpdateOrder;}
+    Actor* GetOwner() const {return mOwner;}
 
 private:
     //Owning actor
