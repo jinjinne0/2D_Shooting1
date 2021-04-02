@@ -8,6 +8,7 @@
 #include <string>
 #include <unordered_map>
 #include "Actor.hpp"
+#include "SpriteComponent.hpp"
 #include "SDL/SDL_image.h"
 #include "SDL/SDL.h"
 
@@ -32,6 +33,8 @@ public:
     void RemoveActor(class Actor* actor);
 
     //TODO: 入力処理と出力生成のためのコンポーネントのAddとRemove関数
+    void AddSprite(SpriteComponent* sprite);
+    void RemoveSprite(SpriteComponent* sprite);
 
     SDL_Texture* GetTexture(const std::string& filename);
 
@@ -63,6 +66,7 @@ private:
     std::vector<Actor*> mPendingActors;
 
     //TODO: 入力処理のと出力生成のためのコンポーネントを入れておくコンテナ(vector)
+    std::vector<SpriteComponent*> mSprites;
 
     //TODO: このゲーム特有でゲーム実行の間は常にあるメンバ変数、オブジェクト
     bool mIsPaused;

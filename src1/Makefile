@@ -1,19 +1,19 @@
 #compiler
-CXX=
+CXX=g++
 #compiler options
-CFLAGS=
+CFLAGS=-Wall
 #target file
-TARGET=
+TARGET=Main
 #source files 
-SRCS=
+SRCS=Main.cpp Game.cpp Math.cpp Component.cpp Actor.cpp SpriteComponent.cpp AnimSpriteComponent.cpp
 #source files
 OBJS= $(SRCS:.cpp=.o)
 #Include path
-INCDIR=
+INCDIR= -I../External/SDL/include
 #Library search path
-LIBDIR=
+LIBDIR=-L../External/SDL/lib
 #Library path
-LIBS=
+LIBS=-lSDL2-2.0.0 -lSDL2_image-2.0.0
 
 #Create target file
 $(TARGET):$(OBJS)

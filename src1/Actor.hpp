@@ -35,8 +35,8 @@ public:
     virtual void UpdateActor(float deltatime);
 
     //Getters/setters
-    //TODO: function to get the coordinate
-    //TODO: function to set the coordinate
+    Vector2 GetPosition() const {return mPosition;}
+    void SetPosition(const Vector2& pos){mPosition = pos;}
     float GetScale(){return mScale;}
     void SetScale(float scale){mScale = scale;}
     float GetRotation(){return mRotation;}
@@ -56,7 +56,7 @@ private:
     State mState;
 
     //Transform
-    //TODO: Coordinate of the center
+    Vector2 mPosition; //center coordinate
     float mScale;    //1.0f for default
     float mRotation; //0.0f for default
 

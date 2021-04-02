@@ -144,6 +144,7 @@ void Game::UpdateGame(){
     //Update ticks count for next delta time
     mTicksCount = SDL_GetTicks();
 
+    //If paused, don`t update game
     if(mIsPaused){
         mPauseTicks += deltatime * 1000.0f;
         return;
@@ -179,7 +180,16 @@ void Game::UpdateGame(){
 
 //TODO: 出力の生成
 void Game::GenerateOutput(){
-    //TODO: 出力するデータの生成と、ハード機器に対する操作
+    //Clear color buffer
+    SDL_SetRenderDrawColor(mRenderer, 0, 0, 0, 255);
+    SDL_RenderClear(mRenderer);
+
+    //Draw all sprite components
+    for(auto sprite : mSprites){
+        sprite->Draw(mRenderer);
+    }
+
+    SDL_RenderPresent(mRenderer);
 }
 
 //TODO:　ゲームオブジェクトの初期化、データのロード
@@ -266,4 +276,26 @@ SDL_Texture* Game::GetTexture(const std::string& filename){
     }
 
     return tex;
+}
+
+void Game::AddSprite(SpriteComponent* sprite){
+
+    //Find the insertion point in the sorted vector
+    int my_draw_order = sprite->GetDrawOrder();
+    auto iter = mSprites.begin();
+    for(; iter != mSprites.end(); ++iter){
+        if((*iter)->GetDrawOrder()> my_draw_order ){
+            break;
+        }
+    }
+
+    mSprites.insert(iter, sprite);
+}
+
+void Game::RemoveSprite(SpriteComponent* sprite){
+    auto iter = std::find(mSprites.begin(), mSprites.end(), sprite);
+    if(iter != mSprites.end()){
+        mSprites.erase(iter);
+    }
+
 }
