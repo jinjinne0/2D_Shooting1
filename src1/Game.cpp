@@ -104,7 +104,10 @@ void Game::RunLoop(){
 
 //TODO:　入力処理
 void Game::ProcessInput(){
-    //TODO: ゲーム自体への入力処理
+    //get keyboard state
+    Uint32 state* = SDL_GetKeyboardState(NULL);
+
+    //Input for controlling game
     SDL_Event event;
     while(SDL_PollEvent(&event)){
         swith (event){
@@ -112,6 +115,16 @@ void Game::ProcessInput(){
                 mIsRunning = false;
                 brerak;
         }
+    }
+
+    if(state[SDL_SCANCODE_ESCAPE]){
+        mIsRunning = false;
+    }
+    if(state[SDL_SCANCODE_A]){  //A-key for start/restart game
+        mIsPaused = false;
+    }
+    if(state[SDL_SCANCODE_S]){  //S-key for pause game
+        mIsPaused = true;
     }
 
     //TODO: ゲームオブジェクトへの入力処理
