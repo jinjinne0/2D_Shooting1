@@ -30,6 +30,8 @@ Game::Game()
 ,mUpdatingActors(false)
 ,mWindow(nullptr)
 ,mRenderer(nullptr)
+,mIsPaused(true)
+,mPauseTicks(0)
 //TODO: その他新しく書いたもの
 {}
 
@@ -74,7 +76,7 @@ bool Game::Initialize(){
     LoadData();
 
     //Then, start counting ticks
-    mTicksCount = 0;
+    mTicksCount = SDL_GetTicks();
 
     return true;
 
@@ -85,7 +87,10 @@ void Game::Shutdown(){
     //TODO: ゲームオブジェクトを消す、メモリ開放
     UnLoadData();
 
-    //TODO: Initialize()で初期化した外部ライブラリの機能などの終了
+    IMG_Quit();
+    SDL_DestroyRenderer(mRenderer);
+    SDL_DestroyWindow(mWindow);
+    SDL_QUIT();
 }
 
 void Game::RunLoop(){
@@ -100,6 +105,14 @@ void Game::RunLoop(){
 //TODO:　入力処理
 void Game::ProcessInput(){
     //TODO: ゲーム自体への入力処理
+    SDL_Event event;
+    while(SDL_PollEvent(&event)){
+        swith (event){
+            case SDL_QUIT:
+                mIsRunning = false;
+                brerak;
+        }
+    }
 
     //TODO: ゲームオブジェクトへの入力処理
 
@@ -107,11 +120,21 @@ void Game::ProcessInput(){
 
 //TODO: ゲームワールドの更新
 void Game::UpdateGame(){
-    //TODO: デルタタイムの計算
-    float deltatime ;
-    //短すぎたり、長すぎたりにならないように調節する
+    //compute delta time
+    //Wait until 16 mili seconds hjas passed since last time
+    while(!SDL_TICKS_PASSED(SDL_GetTicks(), mTicksCount + 16));
+    float deltatime = (SDL_GetTicks() - mTicksCount)/1000.0f;// mili second to second
+    if(deltatime > 0.5f){
+        deltatime = 0.5f;
+    }
 
-    //TODO: mTicksCountの更新
+    //Update ticks count for next delta time
+    mTicksCount = SDL_GetTicks();
+
+    if(mIsPaused){
+        mPauseTicks += deltatime * 1000.0f;
+        return;
+    }
 
     //Update all actors
     mUpdatingActors = true;

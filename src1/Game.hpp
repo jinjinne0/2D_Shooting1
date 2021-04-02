@@ -63,6 +63,8 @@ private:
     //TODO: 入力処理のと出力生成のためのコンポーネントを入れておくコンテナ(vector)
 
     //TODO: このゲーム特有でゲーム実行の間は常にあるメンバ変数、オブジェクト
+    bool mIsPaused;
+    unsigned int mPauseTicks;
 
 };
 
